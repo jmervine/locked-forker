@@ -1,6 +1,6 @@
 = locked-forker
 
-[http://github.com/jmervine/locked-forker]
+{<img src="https://secure.travis-ci.org/jmervine/locked-forker.png?branch=master" alt="Build Status" />}[http://travis-ci.org/jmervine/locked-forker]
 
 == DESCRIPTION:
 

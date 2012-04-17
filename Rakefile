@@ -29,7 +29,7 @@ task :default => :spec
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rd|
-  rd.main = "README.txt"
+  rd.main = "README.rdoc"
   rd.rdoc_files.include("History.txt", "Manifest.txt", "VERSION", "lib/**/*.rb")
 end
 
