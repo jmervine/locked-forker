@@ -5,6 +5,7 @@ Manifest.txt
 Rakefile
 Gemfile.lock
 README.txt
+VERSION
 lib/locked-forker.rb
 spec/spec_helper.rb
 spec/locked_forker_spec.rb

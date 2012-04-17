@@ -1,8 +1,6 @@
 require 'fileutils'
 class LockedForker
   
-  VERSION = "0.0.1"
-
   LOK = "stress.lock"
   LOG = "stress.log"
 

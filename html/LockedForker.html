@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class LockedForker - locked-forker-0.0.1 Documentation</title>
+<title>class LockedForker - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -103,7 +103,7 @@
   
     <li class="file"><a href="./Manifest_txt.html">Manifest</a>
   
-    <li class="file"><a href="./README_txt.html">README</a>
+    <li class="file"><a href="./VERSION.html">VERSION</a>
   
   </ul>
 </nav>
@@ -152,11 +152,6 @@
         <dd class="description">
         
       
-        <dt id="VERSION">VERSION
-        
-        <dd class="description">
-        
-      
       </dl>
     </section>
     
@@ -185,7 +180,7 @@
 
           
           <div class="method-source-code" id="kill-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 56</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">kill</span>
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">running?</span>
     <span class="ruby-keyword">begin</span>
@@ -225,7 +220,7 @@
 
           
           <div class="method-source-code" id="locked-3F-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 48</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">locked?</span>
   <span class="ruby-identifier">lock_file?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -255,7 +250,7 @@
 
           
           <div class="method-source-code" id="pid-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 86</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 84</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pid</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">lock_file?</span>
     <span class="ruby-identifier">@@pid</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>( <span class="ruby-identifier">lock_file</span>, <span class="ruby-string">&quot;r&quot;</span> ).<span class="ruby-identifier">read</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">to_i</span>
@@ -290,7 +285,7 @@
 
           
           <div class="method-source-code" id="run-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 15</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">run</span>
 
   <span class="ruby-comment"># ensure necessary directories exist</span>
@@ -349,7 +344,7 @@
 
           
           <div class="method-source-code" id="running-3F-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 52</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 50</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">running?</span>
   <span class="ruby-identifier">lock_file?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">is_running?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -379,7 +374,7 @@
 
           
           <div class="method-source-code" id="store-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 82</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 80</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">store</span>
   <span class="ruby-identifier">@@store</span>
 <span class="ruby-keyword">end</span></pre>
@@ -409,7 +404,7 @@
 
           
           <div class="method-source-code" id="store-3D-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 78</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 76</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">store=</span>( <span class="ruby-identifier">path</span> )
   <span class="ruby-identifier">@@store</span> = <span class="ruby-identifier">path</span> 
 <span class="ruby-keyword">end</span></pre>
@@ -439,7 +434,7 @@
 
           
           <div class="method-source-code" id="tmp-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 74</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 72</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tmp</span>
   <span class="ruby-identifier">@@tmp</span>
 <span class="ruby-keyword">end</span></pre>
@@ -469,7 +464,7 @@
 
           
           <div class="method-source-code" id="tmp-3D-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 70</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 68</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tmp=</span>( <span class="ruby-identifier">path</span> )
   <span class="ruby-identifier">@@tmp</span> = <span class="ruby-identifier">path</span>
 <span class="ruby-keyword">end</span></pre>

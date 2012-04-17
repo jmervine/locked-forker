@@ -1,5 +1,7 @@
 = locked-forker
 
+[http://github.com/jmervine/locked-forker]
+
 == DESCRIPTION:
 
 Locks and then forks a process.
@@ -14,10 +16,9 @@ Locks and then forks a process.
 
 After checking out the source, run:
 
-  $ rake install
-  $ rake spec
-
-This task will run the specs, which show usage.
+  $ bundle install --path ./vendor/bundle
+  $ bundle exec rake spec
+  $ bundle exec rake install
 
 == LICENSE:
 
