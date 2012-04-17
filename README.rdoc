@@ -20,6 +20,12 @@ After checking out the source, run:
   $ bundle exec rake spec
   $ bundle exec rake install
 
+=== Just the Gem
+
+Add the following to your Gemfile...
+
+  gem 'locked-forker', :git => 'git://github.com/jmervine/locked-forker.git', :tag => 'stable-latest'
+
 == LICENSE:
 
 (The MIT License)
