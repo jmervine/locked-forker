@@ -1,0 +1,7 @@
+vendor
+.bundle
+.*.sw*
+package
+pkg
+tmp
+
