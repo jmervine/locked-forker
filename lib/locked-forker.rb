@@ -100,7 +100,7 @@ class LockedForker
 
   def self.pid
     if lock_file?
-      @@pid ||= File.open( lock_file, "r" ).read.strip.to_i
+      @@pid = File.open( lock_file, "r" ).read.strip.to_i
     else
       @@pid = nil
     end
