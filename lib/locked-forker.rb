@@ -66,10 +66,12 @@ class LockedForker
           FileUtils.mv( log_file, File.join( dest_logs, "#{self.time_stamp}.log" ) )
         end
         delete_lock_file 
-        Process.kill "QUIT", p
+        Process.kill 9, p
         Process.wait
       rescue Errno::ESRCH
         return false
+      rescue Errno::ECHILD
+        return true
       rescue SignalException
         return true
       ensure
@@ -100,7 +102,7 @@ class LockedForker
 
   def self.pid
     if lock_file?
-      @@pid ||= File.open( lock_file, "r" ).read.strip.to_i
+      @@pid = File.open( lock_file, "r" ).read.strip.to_i
     else
       @@pid = nil
     end
