@@ -33,7 +33,7 @@ class LockedForker
       # move logs
       dest_logs = File.join( @@store, "run-logs" ) #, "#{Time.now.to_i}.log" )
       FileUtils.mkdir_p dest_logs 
-      FileUtils.mv( log_file, File.join( dest_logs, "#{Time.now.to_i}.log" ) )
+      FileUtils.mv( log_file, File.join( dest_logs, "#{Time.now.to_i}.log" ) ) if File.exists? log_file
 
       delete_lock_file if lock_file?
     end

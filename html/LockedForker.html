@@ -280,12 +280,12 @@
 
         <div class="method-description">
           
-          
+          <p>@@store  = “/home/jmervine/Development/fork-store”</p>
           
 
           
           <div class="method-source-code" id="run-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 13</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">run</span>
 
   <span class="ruby-comment"># ensure necessary directories exist</span>
@@ -293,13 +293,16 @@
   <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-identifier">@@store</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span> <span class="ruby-identifier">@@store</span>
   
   <span class="ruby-comment"># create lock</span>
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">touch</span> <span class="ruby-identifier">lock_file</span>
-
-  <span class="ruby-comment"># redirect to log</span>
-  <span class="ruby-identifier">$stdout</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-string">&quot;w&quot;</span> )
+  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">touch</span> <span class="ruby-identifier">lock_file</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;couldn't create lock file (#{self.lock_file})&quot;</span>
 
   <span class="ruby-comment"># start fork</span>
   <span class="ruby-identifier">fork</span> <span class="ruby-keyword">do</span> 
+    <span class="ruby-comment"># redirect to log</span>
+    <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">touch</span> <span class="ruby-identifier">log_file</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;couldn't create log file (#{self.log_file})&quot;</span>
+    <span class="ruby-identifier">$stdout</span>.<span class="ruby-identifier">reopen</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-string">&quot;w&quot;</span> )
+    <span class="ruby-identifier">$stdout</span>.<span class="ruby-identifier">sync</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">reopen</span>(<span class="ruby-identifier">$stdout</span>)
+
     <span class="ruby-keyword">yield</span> <span class="ruby-comment"># run code</span>
 
     <span class="ruby-comment"># clean up after code</span>
@@ -312,11 +315,9 @@
     <span class="ruby-identifier">delete_lock_file</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">lock_file?</span>
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-comment"># reset STDOUT</span>
-  <span class="ruby-identifier">$stdout</span> = <span class="ruby-constant">STDOUT</span>
-
   <span class="ruby-comment"># write pid to lock file</span>
-  <span class="ruby-identifier">pid</span> = <span class="ruby-constant">Process</span>.<span class="ruby-identifier">pid</span>
+  <span class="ruby-identifier">p</span> = <span class="ruby-constant">Process</span>.<span class="ruby-identifier">pid</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pid</span> = <span class="ruby-identifier">p</span>
   
   <span class="ruby-comment"># say good by</span>
   <span class="ruby-constant">Process</span>.<span class="ruby-identifier">detach</span> <span class="ruby-identifier">pid</span>
