@@ -60,6 +60,13 @@ namespace :git do
     puts "Tagging current branch with #{p[:tag]} and pushing the tag to origin."
     %x{ git tag -f #{p[:tag]} && git push origin #{p[:tag]} }
   end
+
+  task :ci do
+    # don't run this manually, it should be run as part of 'submit'
+    puts "Commiting rdocs and gemspec."
+    Rake::Task['gemspec'].invoke
+    %x{ git commit -a -m "updating rdocs and gemspec" }
+  end
 end
 
 # vim: syntax=ruby
