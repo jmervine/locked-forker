@@ -33,4 +33,31 @@ Rake::RDocTask.new do |rd|
   rd.rdoc_files.include("History.txt", "Manifest.txt", "VERSION", "lib/**/*.rb")
 end
 
+desc "Tasks to finalize an update."
+task :submit, :tag do |t,p|
+  puts "Running rSpec tests"
+  Rake::Task['spec'].invoke
+  puts "Generating rDocs."
+  Rake::Task['rerdoc'].invoke
+  # push current branch
+  Rake::Task['submit:git:push'].invoke
+  # tagging current branch
+  #  and pushing the tag to origin
+  Rake::Task['submit:git:tag'].invoke(p[:tag])
+end
+
+namespace :git do
+
+  task :push do |task, params|
+    puts "Running git push on current branch."
+    %x{ git push }
+  end
+
+  task :tag, :tag do |t, p|
+    puts "usage: rake git:tag <tag_name>" and exit unless p[:tag]
+    puts "Tagging current branch with #{p[:tag]} and pushing the tag to origin."
+    %x{ git tag -f #{p[:tag]} && git push origin #{p[:tag]} }
+  end
+end
+
 # vim: syntax=ruby
