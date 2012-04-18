@@ -85,10 +85,10 @@ describe LockedForker do
         end.should be
       end
       it "should create a lock file" do
-        File.exists? "/tmp/rspec/stress.lock"
+        File.exists? "/tmp/rspec/fork.lock"
       end
       it "should create a log file" do
-        File.exists? "/tmp/rspec/stress.log"
+        File.exists? "/tmp/rspec/fork.log"
       end
     end
 
@@ -205,10 +205,10 @@ describe LockedForker do
     describe ".run -- did what it should have" do
 
       it "removed lock file" do
-        File.exists?("/tmp/rspec/tmp/stress.lock").should be_false
+        File.exists?("/tmp/rspec/tmp/fork.lock").should be_false
       end
       it "moved log file" do
-        File.exists?("/tmp/rspec/tmp/stress.log").should be_false
+        File.exists?("/tmp/rspec/tmp/fork.log").should be_false
         File.exists?("/tmp/rspec/store/run-logs/200000000.log").should be_true
       end
 

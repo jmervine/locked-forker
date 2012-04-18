@@ -1,13 +1,13 @@
 require 'fileutils'
 class LockedForker
   
-  LOK = "stress.lock"
-  LOG = "stress.log"
+  LOK = "fork.lock"
+  LOG = "fork.log"
 
   @@locked = false
   @@tmp    = "/tmp"
-  @@store  = "/tmp/store"
-  #@@store  = "/home/jmervine/Development/stress-store"
+  @@store  = "/tmp/fork-store"
+  #@@store  = "/home/jmervine/Development/fork-store"
   @@pid
 
   def self.run
