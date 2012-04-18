@@ -24,7 +24,8 @@ After checking out the source, run:
 
 Add the following to your Gemfile...
 
-  gem 'locked-forker', :git => 'git://github.com/jmervine/locked-forker.git', :tag => 'stable-latest'
+  gem 'locked-forker', :git => 'git://github.com/jmervine/locked-forker.git', :tag => '<latest>' 
+                                                                                # e.g. v0.0.2
 
 == LICENSE:
 
