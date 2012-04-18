@@ -7,9 +7,10 @@ class LockedForker
   @@locked = false
   @@tmp    = "/tmp"
   @@store  = "/tmp/fork-store"
-  #@@store  = "/home/jmervine/Development/fork-store"
 
   def self.run
+
+    return false if self.locked? or self.running?
 
     # ensure necessary directories exist
     FileUtils.mkdir_p @@tmp   unless File.directory? @@tmp
@@ -20,22 +21,24 @@ class LockedForker
 
     # start fork
     fork do 
-      # redirect to log
-      FileUtils.touch log_file or raise "couldn't create log file (#{self.log_file})"
-      $stdout.reopen( log_file, "w" )
-      $stdout.sync = true
-      $stderr.reopen($stdout)
+      begin
+        # redirect to log
+        FileUtils.touch log_file or raise "couldn't create log file (#{self.log_file})"
+        $stdout.reopen( log_file, "w" )
+        $stdout.sync = true
+        $stderr.reopen($stdout)
 
-      yield # run code
+        yield # run code
 
-      # clean up after code
-      #
-      # move logs
-      dest_logs = File.join( @@store, "run-logs" ) #, "#{Time.now.to_i}.log" )
-      FileUtils.mkdir_p dest_logs 
-      FileUtils.mv( log_file, File.join( dest_logs, "#{Time.now.to_i}.log" ) ) if File.exists? log_file
-
-      delete_lock_file if lock_file?
+        # clean up after code
+      ensure
+        if File.exists? log_file
+          dest_logs = File.join( @@store, "run-logs" )
+          FileUtils.mkdir_p dest_logs unless File.directory? dest_logs
+          FileUtils.mv( log_file, File.join( dest_logs, "#{Time.now.to_i}.log" ) )
+        end
+        delete_lock_file 
+      end
     end
 
     # write pid to lock file
@@ -60,12 +63,19 @@ class LockedForker
         Process.kill "QUIT", pid 
         Process.wait
       rescue Errno::ESRCH
-        false
+        return false
       rescue SignalException
-        true
+        return true
+      ensure
+        if File.exists? log_file
+          dest_logs = File.join( @@store, "run-logs" )
+          FileUtils.mkdir_p dest_logs unless File.directory? dest_logs
+          FileUtils.mv( log_file, File.join( dest_logs, "#{Time.now.to_i}.log" ) )
+        end
+        delete_lock_file 
       end
     end
-    delete_lock_file if lock_file?
+    delete_lock_file 
   end
 
   def self.tmp=( path )

@@ -65,20 +65,13 @@ describe LockedForker do
   end
 
   describe "WHEN RUNNING" do
-    before do
-      Time.stub(:now).and_return(100000000)
-      # set store to rpsec store
-      LockedForker.store = "/tmp/rspec/store"
-      # set tmp to rspec tmp
-      LockedForker.tmp   = "/tmp/rspec/tmp"
-      if File.directory? "/tmp/rpsec"
-        FileUtils.remove_dir "/tmp/rspec", true 
-      end
-    end
 
     describe ".run -- 10 second test" do
       it "should run" do
+        LockedForker.store = "/tmp/rspec/store"
+        LockedForker.tmp   = "/tmp/rspec/tmp"
         LockedForker.run do
+          puts "test 1"
           (1..10).each do |item|
             sleep 1 and puts "sleep number #{item}"
           end
@@ -153,23 +146,22 @@ describe LockedForker do
 
     end
 
-  end
-
-  describe "AFTER RUNNING" do
-    before do
-      Time.stub(:now).and_return(200000000)
-      # set store to rpsec store
-      LockedForker.store = "/tmp/rspec/store"
-      # set tmp to rspec tmp
-      LockedForker.tmp   = "/tmp/rspec/tmp"
-      if File.directory? "/tmp/rpsec"
-        FileUtils.remove_dir "/tmp/rspec", true 
+    describe "checking the log" do
+      it "should exist" do
+        `grep "test 1" /tmp/rspec/store/run-logs/*.log > /dev/null`.should be_true
       end
     end
 
+  end
+
+  describe "AFTER RUNNING" do
+
     describe "I need to spawn a new test process... " do
       it "I spawned it..." do
+        LockedForker.store = "/tmp/rspec/store"
+        LockedForker.tmp   = "/tmp/rspec/tmp"
         LockedForker.run do
+          puts "test 2"
           (1..10).each do |item|
             sleep 1 and puts "sleep number #{item}"
           end
@@ -202,14 +194,14 @@ describe LockedForker do
       end
     end
 
-    describe ".run -- did what it should have" do
+    describe ".run (clean up tasks) " do
 
-      it "removed lock file" do
+      it "should have removed lock file" do
         File.exists?("/tmp/rspec/tmp/fork.lock").should be_false
       end
-      it "moved log file" do
+      it "should have moved log file" do
         File.exists?("/tmp/rspec/tmp/fork.log").should be_false
-        File.exists?("/tmp/rspec/store/run-logs/200000000.log").should be_true
+        `grep "test 2" /tmp/rspec/store/run-logs/*.log > /dev/null`.should be_true
       end
 
     end
