@@ -95,6 +95,7 @@ describe LockedForker do
       it "should have a pid" do
         LockedForker.pid.should be
         LockedForker.pid.should be_a_kind_of Fixnum
+        LockedForker.pid.should_not eq(Process.pid)
       end
     end
 
