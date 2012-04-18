@@ -38,7 +38,7 @@ class LockedForker
         if File.exists? log_file
           dest_logs = File.join( @@store, "run-logs" )
           FileUtils.mkdir_p dest_logs unless File.directory? dest_logs
-          FileUtils.mv( log_file, File.join( dest_logs, "#{Time.now.to_i}.log" ) )
+          FileUtils.mv( log_file, File.join( dest_logs, "#{self.time_stamp}.log" ) )
         end
         delete_lock_file 
       end
@@ -59,22 +59,27 @@ class LockedForker
   def self.kill
     if self.running?
       begin
-        Process.kill "QUIT", pid 
+        p = pid
+        if File.exists? log_file
+          dest_logs = File.join( @@store, "run-logs" )
+          FileUtils.mkdir_p dest_logs unless File.directory? dest_logs
+          FileUtils.mv( log_file, File.join( dest_logs, "#{self.time_stamp}.log" ) )
+        end
+        delete_lock_file 
+        Process.kill "QUIT", p
         Process.wait
       rescue Errno::ESRCH
         return false
       rescue SignalException
         return true
       ensure
-        if File.exists? log_file
-          dest_logs = File.join( @@store, "run-logs" )
-          FileUtils.mkdir_p dest_logs unless File.directory? dest_logs
-          FileUtils.mv( log_file, File.join( dest_logs, "#{Time.now.to_i}.log" ) )
-        end
-        delete_lock_file 
       end
     end
     delete_lock_file 
+  end
+
+  def self.time_stamp
+    Time.now.to_i
   end
 
   def self.tmp=( path )

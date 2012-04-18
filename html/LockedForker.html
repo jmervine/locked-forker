@@ -180,7 +180,7 @@
 
           
           <div class="method-source-code" id="kill-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 60</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 59</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">kill</span>
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">running?</span>
     <span class="ruby-keyword">begin</span>
@@ -227,7 +227,7 @@
 
           
           <div class="method-source-code" id="locked-3F-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 52</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">locked?</span>
   <span class="ruby-identifier">lock_file?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -257,7 +257,7 @@
 
           
           <div class="method-source-code" id="pid-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 97</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 96</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pid</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">lock_file?</span>
     <span class="ruby-identifier">@@pid</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>( <span class="ruby-identifier">lock_file</span>, <span class="ruby-string">&quot;r&quot;</span> ).<span class="ruby-identifier">read</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">to_i</span>
@@ -307,6 +307,9 @@
   <span class="ruby-comment"># start fork</span>
   <span class="ruby-identifier">fork</span> <span class="ruby-keyword">do</span> 
     <span class="ruby-keyword">begin</span>
+      <span class="ruby-comment"># write pid to lock file</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pid</span> = <span class="ruby-constant">Process</span>.<span class="ruby-identifier">pid</span>
+      
       <span class="ruby-comment"># redirect to log</span>
       <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">touch</span> <span class="ruby-identifier">log_file</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;couldn't create log file (#{self.log_file})&quot;</span>
       <span class="ruby-identifier">$stdout</span>.<span class="ruby-identifier">reopen</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-string">&quot;w&quot;</span> )
@@ -326,10 +329,6 @@
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-comment"># write pid to lock file</span>
-  <span class="ruby-identifier">p</span> = <span class="ruby-constant">Process</span>.<span class="ruby-identifier">pid</span>
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pid</span> = <span class="ruby-identifier">p</span>
-  
   <span class="ruby-comment"># say good by</span>
   <span class="ruby-constant">Process</span>.<span class="ruby-identifier">detach</span> <span class="ruby-identifier">pid</span>
 <span class="ruby-keyword">end</span></pre>
@@ -359,7 +358,7 @@
 
           
           <div class="method-source-code" id="running-3F-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 56</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">running?</span>
   <span class="ruby-identifier">lock_file?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">is_running?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -389,7 +388,7 @@
 
           
           <div class="method-source-code" id="store-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 93</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 92</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">store</span>
   <span class="ruby-identifier">@@store</span>
 <span class="ruby-keyword">end</span></pre>
@@ -419,7 +418,7 @@
 
           
           <div class="method-source-code" id="store-3D-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 89</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">store=</span>( <span class="ruby-identifier">path</span> )
   <span class="ruby-identifier">@@store</span> = <span class="ruby-identifier">path</span> 
 <span class="ruby-keyword">end</span></pre>
@@ -449,7 +448,7 @@
 
           
           <div class="method-source-code" id="tmp-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 85</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 84</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tmp</span>
   <span class="ruby-identifier">@@tmp</span>
 <span class="ruby-keyword">end</span></pre>
@@ -479,7 +478,7 @@
 
           
           <div class="method-source-code" id="tmp-3D-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 81</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 80</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tmp=</span>( <span class="ruby-identifier">path</span> )
   <span class="ruby-identifier">@@tmp</span> = <span class="ruby-identifier">path</span>
 <span class="ruby-keyword">end</span></pre>

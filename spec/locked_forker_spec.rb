@@ -28,12 +28,6 @@ describe LockedForker do
       end
     end
 
-    describe ".kill!" do
-      it "should return false" do
-        LockedForker.kill.should be_false
-      end
-    end
-
     describe ".tmp" do
       it "should return correct string" do
         LockedForker.tmp.should eq(LockedForker.class_variable_get(:@@tmp))
@@ -118,6 +112,7 @@ describe LockedForker do
 
       describe " kill " do
         it " should return true " do
+          sleep 1
           LockedForker.kill.should be_true
         end
       end
@@ -148,7 +143,8 @@ describe LockedForker do
 
     describe "checking the log" do
       it "should exist" do
-        `grep "test 1" /tmp/rspec/store/run-logs/*.log > /dev/null`.should be_true
+        `grep "test 1" /tmp/rspec/store/run-logs/*.log`.should eq("test 1\n")
+        `grep "No such file or directory" /tmp/rspec/store/run-logs/*.log`.should eq("")
       end
     end
 
@@ -201,7 +197,8 @@ describe LockedForker do
       end
       it "should have moved log file" do
         File.exists?("/tmp/rspec/tmp/fork.log").should be_false
-        `grep "test 2" /tmp/rspec/store/run-logs/*.log > /dev/null`.should be_true
+        `grep "test 2" /tmp/rspec/store/run-logs/*.log|cut -d":" -f2`.should eq("test 2\n")
+        `grep "No such file or directory" /tmp/rspec/store/run-logs/*.log`.should eq("")
       end
 
     end
