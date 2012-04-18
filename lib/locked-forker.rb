@@ -22,6 +22,9 @@ class LockedForker
     # start fork
     fork do 
       begin
+        # write pid to lock file
+        self.pid = Process.pid
+        
         # redirect to log
         FileUtils.touch log_file or raise "couldn't create log file (#{self.log_file})"
         $stdout.reopen( log_file, "w" )
@@ -41,10 +44,6 @@ class LockedForker
       end
     end
 
-    # write pid to lock file
-    p = Process.pid
-    self.pid = p
-    
     # say good by
     Process.detach pid
   end
