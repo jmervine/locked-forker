@@ -1,11 +1,12 @@
+.travis.yml
 Gemfile
+locked-forker.gemspec
 History.txt
 Manifest.txt
 .rspec
 Rakefile
 Gemfile.lock
-README.txt
-VERSION
 lib/locked-forker.rb
 spec/spec_helper.rb
 spec/locked_forker_spec.rb
+VERSION
