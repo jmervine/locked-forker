@@ -40,19 +40,21 @@ task :submit, :tag do |t,p|
   puts "Generating rDocs."
   Rake::Task['rerdoc'].invoke
   # push current branch
-  Rake::Task['submit:git:push'].invoke
+  Rake::Task['git:push'].invoke
   # tagging current branch
   #  and pushing the tag to origin
-  Rake::Task['submit:git:tag'].invoke(p[:tag])
+  Rake::Task['git:tag'].invoke(p[:tag])
 end
 
 namespace :git do
 
+  desc "Git push."
   task :push do |task, params|
     puts "Running git push on current branch."
     %x{ git push }
   end
 
+  desc "Git tag."
   task :tag, :tag do |t, p|
     puts "usage: rake git:tag <tag_name>" and exit unless p[:tag]
     puts "Tagging current branch with #{p[:tag]} and pushing the tag to origin."
