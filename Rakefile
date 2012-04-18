@@ -34,32 +34,20 @@ Rake::RDocTask.new do |rd|
 end
 
 desc "Tasks to finalize an update."
-task :submit, :tag do |t,p|
+task :submit do 
   puts "Running rSpec tests"
   Rake::Task['spec'].invoke
   puts "Generating rDocs."
   Rake::Task['rerdoc'].invoke
   # push current branch
-  Rake::Task['git:push'].invoke
+  Rake::Task['git:ci'].invoke
   # tagging current branch
   #  and pushing the tag to origin
-  Rake::Task['git:tag'].invoke(p[:tag])
+  puts "Tagging and pushing."
+  Rake::Task['git:release'].invoke
 end
 
 namespace :git do
-
-  desc "Git push."
-  task :push do |task, params|
-    puts "Running git push on current branch."
-    %x{ git push }
-  end
-
-  desc "Git tag."
-  task :tag, :tag do |t, p|
-    puts "usage: rake git:tag <tag_name>" and exit unless p[:tag]
-    puts "Tagging current branch with #{p[:tag]} and pushing the tag to origin."
-    %x{ git tag -f #{p[:tag]} && git push origin #{p[:tag]} }
-  end
 
   task :ci do
     # don't run this manually, it should be run as part of 'submit'

@@ -1,6 +1,15 @@
+=== 0.0.2 / 2012-04-18
+
+* Updated lock and log file names to `fork.lock` and `fork.log`.
+* Adding catch all rake task `submit` which does the following:
+  * runs specs
+  * generates rdocs
+  * generates gemspec
+  * commits docs and gemspec
+  * tags and pushes tag
+
 === 0.0.1 / 2012-04-17
 
-* 1 major enhancement
-
-  * Birthday!
+* Init
+  * All tests passing.
 
