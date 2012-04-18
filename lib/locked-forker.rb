@@ -36,6 +36,9 @@ class LockedForker
       delete_lock_file if lock_file?
     end
 
+    # reset STDOUT
+    $stdout = STDOUT
+
     # write pid to lock file
     pid = Process.pid
     
