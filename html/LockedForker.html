@@ -84,6 +84,8 @@
     
     <li><a href="#method-c-store-3D">::store=</a>
     
+    <li><a href="#method-c-time_stamp">::time_stamp</a>
+    
     <li><a href="#method-c-tmp">::tmp</a>
     
     <li><a href="#method-c-tmp-3D">::tmp=</a>
@@ -184,19 +186,20 @@
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">kill</span>
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">running?</span>
     <span class="ruby-keyword">begin</span>
-      <span class="ruby-constant">Process</span>.<span class="ruby-identifier">kill</span> <span class="ruby-string">&quot;QUIT&quot;</span>, <span class="ruby-identifier">pid</span> 
+      <span class="ruby-identifier">p</span> = <span class="ruby-identifier">pid</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">log_file</span>
+        <span class="ruby-identifier">dest_logs</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">@@store</span>, <span class="ruby-string">&quot;run-logs&quot;</span> )
+        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-identifier">dest_logs</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span> <span class="ruby-identifier">dest_logs</span>
+        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">dest_logs</span>, <span class="ruby-node">&quot;#{self.time_stamp}.log&quot;</span> ) )
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">delete_lock_file</span> 
+      <span class="ruby-constant">Process</span>.<span class="ruby-identifier">kill</span> <span class="ruby-string">&quot;QUIT&quot;</span>, <span class="ruby-identifier">p</span>
       <span class="ruby-constant">Process</span>.<span class="ruby-identifier">wait</span>
     <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ESRCH</span>
       <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
     <span class="ruby-keyword">rescue</span> <span class="ruby-constant">SignalException</span>
       <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
     <span class="ruby-keyword">ensure</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">log_file</span>
-        <span class="ruby-identifier">dest_logs</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">@@store</span>, <span class="ruby-string">&quot;run-logs&quot;</span> )
-        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-identifier">dest_logs</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span> <span class="ruby-identifier">dest_logs</span>
-        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">dest_logs</span>, <span class="ruby-node">&quot;#{Time.now.to_i}.log&quot;</span> ) )
-      <span class="ruby-keyword">end</span>
-      <span class="ruby-identifier">delete_lock_file</span> 
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">delete_lock_file</span> 
@@ -257,7 +260,7 @@
 
           
           <div class="method-source-code" id="pid-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 96</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 101</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pid</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">lock_file?</span>
     <span class="ruby-identifier">@@pid</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>( <span class="ruby-identifier">lock_file</span>, <span class="ruby-string">&quot;r&quot;</span> ).<span class="ruby-identifier">read</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">to_i</span>
@@ -323,7 +326,7 @@
       <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">log_file</span>
         <span class="ruby-identifier">dest_logs</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">@@store</span>, <span class="ruby-string">&quot;run-logs&quot;</span> )
         <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-identifier">dest_logs</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span> <span class="ruby-identifier">dest_logs</span>
-        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">dest_logs</span>, <span class="ruby-node">&quot;#{Time.now.to_i}.log&quot;</span> ) )
+        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">dest_logs</span>, <span class="ruby-node">&quot;#{self.time_stamp}.log&quot;</span> ) )
       <span class="ruby-keyword">end</span>
       <span class="ruby-identifier">delete_lock_file</span> 
     <span class="ruby-keyword">end</span>
@@ -388,7 +391,7 @@
 
           
           <div class="method-source-code" id="store-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 92</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 97</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">store</span>
   <span class="ruby-identifier">@@store</span>
 <span class="ruby-keyword">end</span></pre>
@@ -418,7 +421,7 @@
 
           
           <div class="method-source-code" id="store-3D-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 88</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 93</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">store=</span>( <span class="ruby-identifier">path</span> )
   <span class="ruby-identifier">@@store</span> = <span class="ruby-identifier">path</span> 
 <span class="ruby-keyword">end</span></pre>
@@ -430,6 +433,36 @@
 
         
       </div><!-- store-3D-method -->
+
+    
+      <div id="method-c-time_stamp" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">time_stamp</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="time_stamp-source">
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">time_stamp</span>
+  <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- time_stamp-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- time_stamp-method -->
 
     
       <div id="method-c-tmp" class="method-detail ">
@@ -448,7 +481,7 @@
 
           
           <div class="method-source-code" id="tmp-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 84</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 89</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tmp</span>
   <span class="ruby-identifier">@@tmp</span>
 <span class="ruby-keyword">end</span></pre>
@@ -478,7 +511,7 @@
 
           
           <div class="method-source-code" id="tmp-3D-source">
-            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 80</span>
+            <pre><span class="ruby-comment"># File lib/locked-forker.rb, line 85</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tmp=</span>( <span class="ruby-identifier">path</span> )
   <span class="ruby-identifier">@@tmp</span> = <span class="ruby-identifier">path</span>
 <span class="ruby-keyword">end</span></pre>
