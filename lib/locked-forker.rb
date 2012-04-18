@@ -8,7 +8,6 @@ class LockedForker
   @@tmp    = "/tmp"
   @@store  = "/tmp/fork-store"
   #@@store  = "/home/jmervine/Development/fork-store"
-  @@pid
 
   def self.run
 
@@ -17,13 +16,16 @@ class LockedForker
     FileUtils.mkdir_p @@store unless File.directory? @@store
     
     # create lock
-    FileUtils.touch lock_file
-  
-    # redirect to log
-    $stdout = File.new( log_file, "w" )
+    FileUtils.touch lock_file or raise "couldn't create lock file (#{self.lock_file})"
 
     # start fork
     fork do 
+      # redirect to log
+      FileUtils.touch log_file or raise "couldn't create log file (#{self.log_file})"
+      $stdout.reopen( log_file, "w" )
+      $stdout.sync = true
+      $stderr.reopen($stdout)
+
       yield # run code
 
       # clean up after code
@@ -36,11 +38,9 @@ class LockedForker
       delete_lock_file if lock_file?
     end
 
-    # reset STDOUT
-    $stdout = STDOUT
-
     # write pid to lock file
-    pid = Process.pid
+    p = Process.pid
+    self.pid = p
     
     # say good by
     Process.detach pid
@@ -95,7 +95,11 @@ class LockedForker
 
   private
   def self.pid=id
-    File.open( lock_file, "w" ).puts id
+    if File.open( self.lock_file, "w" ) { |f| f.write id }
+      @@pid = id
+    else
+      raise "couldn't write pid (#{id}) to lock file (#{self.lock_file})"
+    end
   end
 
   def self.delete_lock_file

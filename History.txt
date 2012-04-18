@@ -1,3 +1,9 @@
+=== 0.0.4 / 2012-04-18
+
+* Bug: Fixed .pid, it wasn't writing correclty.
+* Bug: Fixed forked process logging, it wasn't working.
+* Update: modified logging to get STDOUT and STDERR from forked process.
+
 === 0.0.3 / 2012-04-18
 
 * Bug: Fixing STDOUT after fork.
