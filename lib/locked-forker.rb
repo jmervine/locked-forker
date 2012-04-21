@@ -43,6 +43,7 @@ class LockedForker
     end
     # say good by
     Process.detach self.pid
+    return true
   end
   
   def self.locked?

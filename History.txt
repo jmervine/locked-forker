@@ -1,3 +1,11 @@
+=== 0.0.6 / 2012-04-21
+
+* updated run to return true when spawning a new fork
+
+=== 0.0.5 / 2012-04-21
+
+* adding the ablity to force a timestamp
+
 === 0.0.4 / 2012-04-18
 
 * Bug: Fixed .pid, it wasn't writing correclty.
