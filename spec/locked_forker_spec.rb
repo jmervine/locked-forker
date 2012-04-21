@@ -72,7 +72,7 @@ describe LockedForker do
 
   describe "WHEN RUNNING" do
 
-    describe ".run -- 10 second test" do
+    describe ".run" do
       it "should run" do
         LockedForker.store = "/tmp/rspec/store"
         LockedForker.tmp   = "/tmp/rspec/tmp"
@@ -81,7 +81,13 @@ describe LockedForker do
           (1..10).each do |item|
             sleep 1 and puts "sleep number #{item}"
           end
-        end.should be
+        end.should be_true
+      end
+      it "should return false when already running" do
+        LockedForker.run do
+          # code that doesn't get run
+          sleep 1
+        end.should be_false
       end
       it "should create a lock file" do
         File.exists? "/tmp/rspec/fork.lock"
