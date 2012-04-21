@@ -7,7 +7,7 @@ class LockedForker
   @@locked = false
   @@tmp    = "/tmp"
   @@store  = "/tmp/fork-store"
-  @@log = nil
+  @@time_stamp = nil
 
   def self.run
 
@@ -78,11 +78,11 @@ class LockedForker
   end
 
   def self.time_stamp
-    if @@log.nil?
-      Time.now.to_i
-    else
-      @@log
-    end
+    @@time_stamp ||= Time.now.to_i
+  end
+
+  def self.time_stamp=(ts)
+    @@time_stamp = ts.to_i
   end
 
   def self.tmp=( path )
@@ -108,10 +108,6 @@ class LockedForker
       @@pid = nil
     end
     @@pid
-  end
-
-  def self.log=(log)
-    @@log = log
   end
 
   private

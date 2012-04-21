@@ -3,6 +3,18 @@ require 'spec_helper'
 describe LockedForker do
 
   describe "WHEN IDLE" do
+
+    describe ".time_stamp=" do
+      it "should force the time_stamp" do
+        LockedForker.time_stamp="1000000000"
+      end
+    end
+ 
+    describe ".time_stamp" do
+      it "should force the time_stamp" do
+        LockedForker.time_stamp.should eq(1000000000)
+      end
+    end
  
     describe ".locked?" do
       it "shouldn't be locked" do
