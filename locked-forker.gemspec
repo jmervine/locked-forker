@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "locked-forker"
-  s.version = "0.0.6"
+  s.version = "0.0.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joshua Mervine"]
-  s.date = "2012-04-21"
+  s.date = "2012-04-23"
   s.description = " Utilities to lock and fork code for those that want to fork calls, but ensure that no one will run that code until the fork completes. "
   s.email = "joshua@mervine.net"
   s.extra_rdoc_files = [
