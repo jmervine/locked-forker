@@ -162,8 +162,8 @@ describe LockedForker do
 
     describe "checking the log" do
       it "should exist" do
-        `grep "test 1" /tmp/rspec/store/run-logs/*.log`.should eq("test 1\n")
-        `grep "No such file or directory" /tmp/rspec/store/run-logs/*.log`.should eq("")
+        `grep "test 1" /tmp/rspec/store/**/run.log`.should eq("test 1\n")
+        `grep "No such file or directory" /tmp/rspec/store/**/run.log`.should eq("")
       end
     end
 
@@ -177,7 +177,7 @@ describe LockedForker do
         LockedForker.tmp   = "/tmp/rspec/tmp"
         LockedForker.run do
           puts "test 2"
-          (1..10).each do |item|
+          (1..5).each do |item|
             sleep 1 and puts "sleep number #{item}"
           end
         end.should be_true
@@ -185,9 +185,9 @@ describe LockedForker do
       end
     end
 
-    describe "I need to sleep for 10 seconds to complete the spawned process..." do
+    describe "I need to sleep for 5 seconds to complete the spawned process..." do
       it "Time to wake up..." do
-        sleep 10
+        sleep 5
       end
     end
 
@@ -216,8 +216,8 @@ describe LockedForker do
       end
       it "should have moved log file" do
         File.exists?("/tmp/rspec/tmp/fork.log").should be_false
-        `grep "test 2" /tmp/rspec/store/run-logs/*.log|cut -d":" -f2`.should eq("test 2\n")
-        `grep "No such file or directory" /tmp/rspec/store/run-logs/*.log`.should eq("")
+        `grep "test 2" /tmp/rspec/store/**/run.log|cut -d":" -f2`.should eq("test 2\n")
+        `grep "No such file or directory" /tmp/rspec/store/**/run.log`.should eq("")
       end
 
     end

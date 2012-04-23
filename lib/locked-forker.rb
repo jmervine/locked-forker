@@ -1,8 +1,8 @@
 require 'fileutils'
 class LockedForker
   
-  LOK = "fork.lock"
-  LOG = "fork.log"
+  TMP_LOK = "fork.lock"
+  TMP_LOG = "fork.log"
 
   @@locked = false
   @@tmp    = "/tmp"
@@ -34,9 +34,9 @@ class LockedForker
         # clean up after code
       ensure
         if File.exists? log_file
-          dest_logs = File.join( @@store, "run-logs" )
+          dest_logs = File.join( @@store, self.time_stamp.to_s )
           FileUtils.mkdir_p dest_logs unless File.directory? dest_logs
-          FileUtils.mv( log_file, File.join( dest_logs, "#{self.time_stamp}.log" ) )
+          FileUtils.mv( log_file, File.join( dest_logs, "run.log" ) )
         end
         delete_lock_file 
       end
@@ -59,9 +59,9 @@ class LockedForker
       begin
         p = pid
         if File.exists? log_file
-          dest_logs = File.join( @@store, "run-logs" )
+          dest_logs = File.join( @@store, self.time_stamp.to_s )
           FileUtils.mkdir_p dest_logs unless File.directory? dest_logs
-          FileUtils.mv( log_file, File.join( dest_logs, "#{self.time_stamp}.log" ) )
+          FileUtils.mv( log_file, File.join( dest_logs, "run.log" ) )
         end
         delete_lock_file 
         Process.kill 9, p
@@ -133,11 +133,11 @@ class LockedForker
   end
 
   def self.lock_file
-    File.join( @@tmp, LOK )
+    File.join( @@tmp, TMP_LOK )
   end
 
   def self.log_file
-    File.join( @@tmp, LOG )
+    File.join( @@tmp, TMP_LOG )
   end
 
   def self.is_running?

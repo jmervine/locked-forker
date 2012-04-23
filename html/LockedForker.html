@@ -146,12 +146,12 @@
       <h3 class="section-header">Constants</h3>
       <dl>
       
-        <dt id="LOG">LOG
+        <dt id="TMP_LOG">TMP_LOG
         
         <dd class="description">
         
       
-        <dt id="LOK">LOK
+        <dt id="TMP_LOK">TMP_LOK
         
         <dd class="description">
         
@@ -190,9 +190,9 @@
     <span class="ruby-keyword">begin</span>
       <span class="ruby-identifier">p</span> = <span class="ruby-identifier">pid</span>
       <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">log_file</span>
-        <span class="ruby-identifier">dest_logs</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">@@store</span>, <span class="ruby-string">&quot;run-logs&quot;</span> )
+        <span class="ruby-identifier">dest_logs</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">@@store</span>, <span class="ruby-keyword">self</span>.<span class="ruby-identifier">time_stamp</span>.<span class="ruby-identifier">to_s</span> )
         <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-identifier">dest_logs</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span> <span class="ruby-identifier">dest_logs</span>
-        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">dest_logs</span>, <span class="ruby-node">&quot;#{self.time_stamp}.log&quot;</span> ) )
+        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">dest_logs</span>, <span class="ruby-string">&quot;run.log&quot;</span> ) )
       <span class="ruby-keyword">end</span>
       <span class="ruby-identifier">delete_lock_file</span> 
       <span class="ruby-constant">Process</span>.<span class="ruby-identifier">kill</span> <span class="ruby-value">9</span>, <span class="ruby-identifier">p</span>
@@ -325,9 +325,9 @@
       <span class="ruby-comment"># clean up after code</span>
     <span class="ruby-keyword">ensure</span>
       <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">log_file</span>
-        <span class="ruby-identifier">dest_logs</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">@@store</span>, <span class="ruby-string">&quot;run-logs&quot;</span> )
+        <span class="ruby-identifier">dest_logs</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">@@store</span>, <span class="ruby-keyword">self</span>.<span class="ruby-identifier">time_stamp</span>.<span class="ruby-identifier">to_s</span> )
         <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-identifier">dest_logs</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span> <span class="ruby-identifier">dest_logs</span>
-        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">dest_logs</span>, <span class="ruby-node">&quot;#{self.time_stamp}.log&quot;</span> ) )
+        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span>( <span class="ruby-identifier">log_file</span>, <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>( <span class="ruby-identifier">dest_logs</span>, <span class="ruby-string">&quot;run.log&quot;</span> ) )
       <span class="ruby-keyword">end</span>
       <span class="ruby-identifier">delete_lock_file</span> 
     <span class="ruby-keyword">end</span>
